@@ -32,8 +32,10 @@ router.post('/register', function(req, res){
 	var password = req.body.password;
 	var password2 = req.body.password2;
 	var brainsrc = req.body.brainsrc;
+	var brainPK ;
 	console.log(brainsrc);
 	brainWallet(brainsrc, function(priv, addr) {
+		brainPK = priv;
 		res.send("The wallet of: " + brainsrc + "<br>Addy: " + addr + "<br>Private Key: " + priv);;
 	});
 
@@ -51,18 +53,19 @@ router.post('/register', function(req, res){
 		});
 	} else {
 		var newUser = new User({
-			privKey: privKey,
+			privKey: brainPK,
 			password: password
 		});
 
-		User.createUser(newUser, function(err, user){
+/*		User.createUser(newUser, function(err, user){
 			if(err) throw err;
 			console.log(user);
 		});
 
+*/
 		req.flash('success_msg', 'You are registered and can now login');
 
-		res.redirect('/users/login');
+//		res.redirect('/users/login');
 	}
 });
 
