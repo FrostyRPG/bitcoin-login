@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "*",
     "bitcoinjs-lib": "*",
     "bitcore-lib": "*",
     "body-parser": "*",
