@@ -11,6 +11,3 @@ var UserSchema = mongoose.Schema({
 });
 
 var User = module.exports;
-
-
-}
