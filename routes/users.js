@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var bodyparser = require("body-parser");
+var bitcore = require("bitcore-lib");
 
 var User = require('../models/user');
 
@@ -15,19 +17,29 @@ router.get('/login', function(req, res){
 	res.render('login');
 });
 
+// Create wallet data
+function brainWallet(uinput, callback) {
+	var input = new Buffer(uinput);
+	var hash = bitcore.crypto.Hash.sha256(input);
+	var bn = bitcore.crypto.BN.fromBuffer(hash);
+	var pk = new bitcore.PrivateKey(bn).toWIF();
+	var addy = new bitcore.PrivateKey(bn).toAddress();
+	callback(pk, addy);
+};
+
 // Register User
 router.post('/register', function(req, res){
-	var name = req.body.name;
-	var email = req.body.email;
-	var username = req.body.username;
 	var password = req.body.password;
 	var password2 = req.body.password2;
+	var brainsrc = req.body.brainsrc;
+	console.log(brainsrc);
+	brainWallet(brainsrc, function(priv, addr) {
+		res.send("The wallet of: " + brainsrc + "<br>Addy: " + addr + "<br>Private Key: " + priv);;
+	});
 
 	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('username', 'Username is required').notEmpty();
+	
+	req.checkBody('brainsrc', 'Entropy is required').notEmpty();
 	req.checkBody('password', 'Password is required').notEmpty();
 	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
 
@@ -39,9 +51,7 @@ router.post('/register', function(req, res){
 		});
 	} else {
 		var newUser = new User({
-			name: name,
-			email:email,
-			username: username,
+			privKey: privKey,
 			password: password
 		});
 
@@ -57,8 +67,8 @@ router.post('/register', function(req, res){
 });
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-   User.getUserByUsername(username, function(err, user){
+  function(privKey, password, done) {
+   User.getUserByPrivKey(privKey, function(err, user){
    	if(err) throw err;
    	if(!user){
    		return done(null, false, {message: 'Unknown User'});

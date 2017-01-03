@@ -1,9 +1,7 @@
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var bitcoin = require("bitcoinjs-lib");
 var bitcore = require("bitcore-lib");
-var bcrypt = require('bcryptjs');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var expressValidator = require('express-validator');
@@ -11,10 +9,6 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/identity');
-var db = mongoose.connection;
 
 // Routes
 var routes = require('./routes/index');
@@ -30,7 +24,7 @@ app.set('view engine', 'handlebars');
 
 // BodyParser Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -75,8 +69,6 @@ app.use(function (req, res, next) {
   res.locals.user = req.user || null;
   next();
 });
-
-
 
 app.use('/', routes);
 app.use('/users', users);

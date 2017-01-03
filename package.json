@@ -1,5 +1,5 @@
 {
-  "name": "loginapp",
+  "name": "bitcoinlogin",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -9,12 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "*",
     "bitcoinjs-lib": "*",
     "bitcore-lib": "*",
     "body-parser": "*",
     "connect-flash": "*",
-    "cookie-parser": "^1.4.1",
     "express": "*",
     "express-handlebars": "*",
     "express-messages": "*",
@@ -24,6 +22,7 @@
     "mongoose": "*",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "request": "^2.79.0"
   }
 }
