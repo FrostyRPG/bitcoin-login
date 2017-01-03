@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bitcoin = require("bitcoinjs-lib");
 var bitcore = require("bitcore-lib");
+var bcrypt = require('bcryptjs');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var expressValidator = require('express-validator');
