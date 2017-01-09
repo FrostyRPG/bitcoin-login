@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // User Schema
-var UserSchema = mongoose.Schema({
+var userSchema = mongoose.Schema({
 	privKey: {
 		type: String,
 	},
@@ -10,4 +10,9 @@ var UserSchema = mongoose.Schema({
 	},
 });
 
-var User = module.exports;
+
+var User = mongoose.model('User', userSchema);
+module.exports = User;
+
+
+//var User = module.exports;
